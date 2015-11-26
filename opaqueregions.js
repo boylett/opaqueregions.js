@@ -49,7 +49,7 @@ function opaqueregions(source, x, y, width, height)
 		var right = null,
 			bottom = null;
 		
-		// Now we'll scan the map again from each corner's top-left coordinates and look for the next transparent pixel
+		// Now we'll scan from each corner's top-left coordinates and look for the next transparent pixel
 		for(var y = boxes[i].top; y < canvas.height; y ++)
 		{
 			// Start with the x-axis
