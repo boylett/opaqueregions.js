@@ -11,7 +11,8 @@ These can be left blank to search the entire image.
 
 ## Returns
 Returns an `Array` containing multiple `Object`s, for example:
-````[
+````js
+[
 	{
 		top: 100,
 		right: 500,
@@ -24,4 +25,5 @@ Returns an `Array` containing multiple `Object`s, for example:
 		bottom: 100,
 		left: 500
 	}
-]````
+]
+````
