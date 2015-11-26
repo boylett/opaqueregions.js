@@ -1,8 +1,3 @@
-/* Welcome! If you find this code useful, please remember
- * to provide a link back to this page in your source code
- * Fork it: https://github.com/boylett/opaqueregions.js
- */
-
 function opaqueregions(source, x, y, width, height)
 {
 	var canvas, context, pixels, boxes = [], collisions = [];
@@ -149,39 +144,3 @@ function opaqueregions(source, x, y, width, height)
 	// Now we have an array of objects containing various box bounds :) Simples!
 	return boxes;
 }
-
-/* ----- Everything below is demo code -----
- */
-
-window.onload = function()
-{
-	var context = canvas.getContext('2d');
-
-	canvas.width = 400;
-	canvas.height = 400;
-	
-	context.fillStyle = '#F0F';
-	context.fillRect(0, 0, 100, 100);
-	context.fillRect(120, 20, 50, 200);
-	context.fillRect(320, 60, 18, 7);
-	context.fillRect(320, 60, 30, 3);
-	context.fillRect(180, 10, 30, 270);
-	context.fillRect(180, 10, 25, 280);
-	context.fillRect(310, 310, 90, 90);
-	context.fillRect(300, 320, 90, 80);
-	
-	var benchmark = new Date(),
-		boxes = opaqueregions(context);
-		benchmark = (new Date() - benchmark) / 1000;
-	
-	results.innerHTML += '<strong>' + boxes.length + ' Boxes Found</strong> in ' + benchmark + ' seconds<br /><br />';
-	
-	for(var i in boxes)
-	{
-		context.strokeStyle = '#00F';
-		context.strokeRect(boxes[i].left, boxes[i].top, boxes[i].right - boxes[i].left, boxes[i].bottom - boxes[i].top);
-		
-		results.innerHTML += '<div>x: ' + boxes[i].left + ', y: ' + boxes[i].top + '</div>';
-		results.innerHTML += '<div>width: ' + (boxes[i].right - boxes[i].left) + ', height: ' + (boxes[i].bottom - boxes[i].top) + '</div><br />';
-	}
-};
