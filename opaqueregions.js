@@ -1,10 +1,20 @@
 function opaqueregions(source, x, y, width, height)
 {
-	// Get the image pixel data and initialize variables
-	var canvas = (source instanceof CanvasRenderingContext2D ? source.canvas : source),
-		context = (source instanceof CanvasRenderingContext2D ? source : canvas.getContext('2d')),
-		pixels = context.getImageData(x ? x : 0, y ? y : 0, width ? width : canvas.width, height ? height : canvas.height),
-		boxes = [];
+	var canvas, context, pixels, boxes = [];
+	
+	// If image data was provided, we don't need to retrieve it from the canvas
+	if(source instanceof ImageData)
+	{
+		canvas = { width: source.width, height: source.height };
+		pixels = source;
+	}
+	// Otehrwise let's get the image pixel data and initialize variables
+	else
+	{
+		canvas = (source instanceof CanvasRenderingContext2D ? source.canvas : source);
+		context = (source instanceof CanvasRenderingContext2D ? source : canvas.getContext('2d'));
+		pixels = context.getImageData(x ? x : 0, y ? y : 0, width ? width : canvas.width, height ? height : canvas.height);
+	}
 	
 	// Iterate through each pixel in the image, searching for non-transparent pixels to use as box markers
 	for(var i = 0; i < pixels.data.length; i += 4)
