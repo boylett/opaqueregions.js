@@ -1,6 +1,11 @@
+/* Welcome! If you find this code useful, please remember
+ * to provide a link back to this page in your source code
+ * Fork it: https://github.com/boylett/opaqueregions.js
+ */
+
 function opaqueregions(source, x, y, width, height)
 {
-	var canvas, context, pixels, boxes = [], collissions = [];
+	var canvas, context, pixels, boxes = [], collisions = [];
 	
 	// If image data was provided, we don't need to retrieve it from the canvas
 	if(source instanceof ImageData)
@@ -86,50 +91,50 @@ function opaqueregions(source, x, y, width, height)
 				(boxes[j].bottom - boxes[j].top) + boxes[j].top > boxes[i].left
 			)
 			{
-				var collission = [i, j];
-					collission.sort();
-					collission = collission.join(',');
+				var collision = [i, j];
+					collision.sort();
+					collision = collision.join(',');
 				
-				if(collissions.indexOf(collission) == -1)
+				if(collisions.indexOf(collision) == -1)
 				{
-					collissions.push(collission);
+					collisions.push(collision);
 				}
 			}
 		}
 	}
 	
-	// For each collission, measure the minimum and maximum bounds in the colliding area and merge them into a single box
-	for(var i in collissions)
+	// For each collision, measure the minimum and maximum bounds in the colliding area and merge them into a single box
+	for(var i in collisions)
 	{
-		var collission = collissions[i].split(','),
+		var collision = collisions[i].split(','),
 			mintop = canvas.height,
 			maxright = 0,
 			maxbottom = 0,
 			minleft = canvas.width;
 		
-		for(var j in collission)
+		for(var j in collision)
 		{
-			if(boxes[collission[j]].top < mintop)
+			if(boxes[collision[j]].top < mintop)
 			{
-				mintop = boxes[collission[j]].top;
+				mintop = boxes[collision[j]].top;
 			}
 			
-			if(boxes[collission[j]].right > maxright)
+			if(boxes[collision[j]].right > maxright)
 			{
-				maxright = boxes[collission[j]].right;
+				maxright = boxes[collision[j]].right;
 			}
 			
-			if(boxes[collission[j]].bottom > maxbottom)
+			if(boxes[collision[j]].bottom > maxbottom)
 			{
-				maxbottom = boxes[collission[j]].bottom;
+				maxbottom = boxes[collision[j]].bottom;
 			}
 			
-			if(boxes[collission[j]].left < minleft)
+			if(boxes[collision[j]].left < minleft)
 			{
-				minleft = boxes[collission[j]].left;
+				minleft = boxes[collision[j]].left;
 			}
 			
-			delete boxes[collission[j]];
+			delete boxes[collision[j]];
 		}
 		
 		boxes.push(
@@ -144,3 +149,39 @@ function opaqueregions(source, x, y, width, height)
 	// Now we have an array of objects containing various box bounds :) Simples!
 	return boxes;
 }
+
+/* ----- Everything below is demo code -----
+ */
+
+window.onload = function()
+{
+	var context = canvas.getContext('2d');
+
+	canvas.width = 400;
+	canvas.height = 400;
+	
+	context.fillStyle = '#F0F';
+	context.fillRect(0, 0, 100, 100);
+	context.fillRect(120, 20, 50, 200);
+	context.fillRect(320, 60, 18, 7);
+	context.fillRect(320, 60, 30, 3);
+	context.fillRect(180, 10, 30, 270);
+	context.fillRect(180, 10, 25, 280);
+	context.fillRect(310, 310, 90, 90);
+	context.fillRect(300, 320, 90, 80);
+	
+	var benchmark = new Date(),
+		boxes = opaqueregions(context);
+		benchmark = (new Date() - benchmark) / 1000;
+	
+	results.innerHTML += '<strong>' + boxes.length + ' Boxes Found</strong> in ' + benchmark + ' seconds<br /><br />';
+	
+	for(var i in boxes)
+	{
+		context.strokeStyle = '#00F';
+		context.strokeRect(boxes[i].left, boxes[i].top, boxes[i].right - boxes[i].left, boxes[i].bottom - boxes[i].top);
+		
+		results.innerHTML += '<div>x: ' + boxes[i].left + ', y: ' + boxes[i].top + '</div>';
+		results.innerHTML += '<div>width: ' + (boxes[i].right - boxes[i].left) + ', height: ' + (boxes[i].bottom - boxes[i].top) + '</div><br />';
+	}
+};
