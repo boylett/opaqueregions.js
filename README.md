@@ -1,5 +1,5 @@
 # opaqueregions.js
-Quick javascript function to retrieve non-transparent regions from a transparent canvas
+Quick javascript function to retrieve non-transparent regions from a transparent canvas. [See it in action](https://codepen.io/boylett/pen/vYvZodj).
 
 ## Usage
 `opaqueregions(source, x, y, width, height)`
